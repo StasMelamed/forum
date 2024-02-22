@@ -11,6 +11,7 @@ import forum.dto.Comment;
 import forum.dto.PeriodDto;
 import forum.dto.PostDto;
 import forum.dto.TagsDto;
+import forum.dto.UpdateDto;
 import forum.model.PostModel;
 
 public interface ClientInterface {
@@ -31,7 +32,7 @@ public interface ClientInterface {
 	
 	List<PostDto> findPostByPeriod(PeriodDto periodDto);
 	
-	PostDto updatePost(String id);
+	PostDto updatePost(String id,UpdateDto updateDto);
 	
 
 }

@@ -19,6 +19,7 @@ import forum.dto.Comment;
 import forum.dto.PeriodDto;
 import forum.dto.PostDto;
 import forum.dto.TagsDto;
+import forum.dto.UpdateDto;
 import forum.model.PostModel;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,15 +76,15 @@ public class PersonController{
 		return clientInterface.findPostByTags(tags);
 	}
 
-
+    @PostMapping("/forum/posts/period")
 	public List<PostDto> findPostByPeriod(@RequestBody PeriodDto periodDto) {
 		
 		return clientInterface.findPostByPeriod(periodDto);
 	}
 
-
-	public PostDto updatePost(String id) {
+    @PutMapping("/forum/post/{postId}")
+	public PostDto updatePost(@PathVariable("postId") String id,@RequestBody UpdateDto updateDto) {
 		
-		return clientInterface.updatePost(id);
+		return clientInterface.updatePost(id,updateDto);
 	}
 }

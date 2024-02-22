@@ -23,6 +23,7 @@ import forum.dto.ExceptionsDto;
 import forum.dto.PeriodDto;
 import forum.dto.PostDto;
 import forum.dto.TagsDto;
+import forum.dto.UpdateDto;
 import forum.model.PostModel;
 
 @Component
@@ -143,9 +144,17 @@ public class ForumImpl implements ClientInterface {
 	}
 
 	@Override
-	public PostDto updatePost(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public PostDto updatePost(String id,UpdateDto updateDto) {
+		
+		PostModel postModel = repositoryInterface.findById(id).orElseThrow(ExceptionsDto::new);
+		
+		postModel.setTitle(updateDto.getTitle());
+		postModel.setTags(updateDto.getTags());
+		postModel.setContent(updateDto.getContent());
+		
+		repositoryInterface.save(postModel);
+		
+		return modelMapper.map(postModel, PostDto.class);
 	}
 
 }
