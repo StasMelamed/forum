@@ -1,9 +1,12 @@
 package forum.accounting.controller;
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.mongodb.core.aggregation.StringOperators.RegexFind;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Basic;
+
+import ch.qos.logback.core.boolex.Matcher;
 import forum.accounting.dao.AccountInterface;
 import forum.accounting.dao.RepositoryUserInterface;
 import forum.accounting.dto.AuthHeader;
@@ -43,10 +49,15 @@ public class UserController{
 		return accountInterface.registerUser(regUserDto);
 	}
 
-	@GetMapping("/account/login")
-  //  @PreAuthorize("hasAuthority('USER')")
-    public UserDto loginUser() {
-        return null;
+	@PostMapping("/account/login")
+    public UserDto loginUser(@RequestHeader("Authorization") String token) {
+		
+          token = token.split(" ")[1];
+          
+          String login = new String(Base64.getDecoder().decode(token)).split(":")[0];
+	
+
+        return accountInterface.loginUser(login);
     }
  
 //    @GetMapping("/admin/adminProfile")

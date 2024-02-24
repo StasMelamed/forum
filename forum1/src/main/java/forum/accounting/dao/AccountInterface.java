@@ -11,7 +11,7 @@ public interface AccountInterface {
 	
 	RegisteredUser registerUser(RegUserDto regUserDto);
 	
-	UserDto loginUser(String login);
+	UserDto loginUser(String token);
 	
 	UserDto deleteUser(String user);
 	

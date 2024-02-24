@@ -16,6 +16,7 @@ import forum.accounting.dto.RoleDto;
 import forum.accounting.dto.UpdateUserDto;
 import forum.accounting.dto.UserDto;
 import forum.accounting.dto.UserExistsException;
+import forum.accounting.dto.UserNotFoundException;
 import forum.accounting.model.AccountModel;
 import forum.dao.ClientInterface;
 import forum.dao.NewPostDto;
@@ -57,8 +58,12 @@ public class UserService implements AccountInterface {
 
 	@Override
 	public UserDto loginUser(String login) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//boolean password = BCrypt.checkpw(authorization, repositoryUserInterface.findById(authorization))
+		
+		AccountModel accountModel = repositoryUserInterface.findById(login).orElseThrow(UserNotFoundException::new);
+		
+		return modelMapper.map(accountModel, UserDto.class);
 	}
 
 	@Override
