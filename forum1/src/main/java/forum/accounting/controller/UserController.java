@@ -1,5 +1,6 @@
 package forum.accounting.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.StringOperators.RegexFind;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Basic;
@@ -49,16 +52,22 @@ public class UserController{
 		return accountInterface.registerUser(regUserDto);
 	}
 
-	@PostMapping("/account/login")
-    public UserDto loginUser(@RequestHeader("Authorization") String token) {
-		
-          token = token.split(" ")[1];
-          
-          String login = new String(Base64.getDecoder().decode(token)).split(":")[0];
+//	@PostMapping("/account/login")
+//    public UserDto loginUser(@RequestHeader("Authorization") String token) {
+//		
+//          token = token.split(" ")[1];
+//          
+//          String login = new String(Base64.getDecoder().decode(token)).split(":")[0];
+//	
+//
+//        return accountInterface.loginUser(login);
+//    }
 	
-
-        return accountInterface.loginUser(login);
-    }
+	@PostMapping("/account/login")
+	public UserDto loginUser(Principal principal) {
+		
+		return  accountInterface.loginUser(principal.getName());
+		}
  
 //    @GetMapping("/admin/adminProfile")
 //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -93,13 +102,15 @@ public class UserController{
 	}
 
 	@PutMapping("/account/password")
-	public void changePassword(String login,String newPassword) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void changePassword(Principal principal, @RequestHeader("X-Password") String newPassword) {
 	
-		accountInterface.changePassword(baseUrl, baseUrl);
+		accountInterface.changePassword(principal.getName(), newPassword);
 		
 	}
 
 	@GetMapping("/account/user/{user}")
+	
 	public UserDto getUser(@PathVariable("user") String user) {
 		
 		return accountInterface.getUser(user);
