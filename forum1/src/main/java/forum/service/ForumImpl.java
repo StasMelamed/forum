@@ -44,7 +44,7 @@ public class ForumImpl implements ClientInterface {
 		postModel.setContent(newPostDto.getContent());
 		List<String> tagsList = newPostDto.getTags();
 		postModel.setTags(tagsList);
-				
+					
 		repositoryInterface.save(postModel);
 		
 		return modelMapper.map(postModel,PostDto.class) ;
