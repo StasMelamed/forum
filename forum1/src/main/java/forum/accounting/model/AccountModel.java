@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Document(collection = "accounts")
 @EqualsAndHashCode(of = "login")
-@NoArgsConstructor
 public class AccountModel {
 	
 	@Id
@@ -28,18 +27,36 @@ public class AccountModel {
     String firstName;
 	@Setter
     String lastName;	
-    Set<String> roles = new HashSet<String>(Arrays.asList("USER"));
+    Set<Role> roles;
+    
+    public AccountModel() {
+    	
+    	roles = new HashSet<Role>();
+    	addRole("admin");
+    	
+    }
+   public AccountModel(String login, String password, String firstName, String lastName) {
+	super();
+	this.login = login;
+	this.password = password;
+	this.firstName = firstName;
+	this.lastName = lastName;
+} 
     
 	
     public boolean addRole(String role) {
 		
-    	return roles.add(role);
+    	return roles.add(Role.valueOf(role.toUpperCase()));
 	}
 	
 public boolean deleteRole(String role) {
 		
-    	return roles.remove(role);
+    	return roles.remove(Role.valueOf(role.toUpperCase()));
 	}
+
+
+
+
 	
 
 }
