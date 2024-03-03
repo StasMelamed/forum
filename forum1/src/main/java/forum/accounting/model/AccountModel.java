@@ -27,11 +27,11 @@ public class AccountModel {
     String firstName;
 	@Setter
     String lastName;	
-    Set<Role> roles;
+    Set<Roles> roles;
     
     public AccountModel() {
     	
-    	roles = new HashSet<Role>();
+    	roles = new HashSet<Roles>();
     	addRole("admin");
     	
     }
@@ -46,12 +46,12 @@ public class AccountModel {
 	
     public boolean addRole(String role) {
 		
-    	return roles.add(Role.valueOf(role.toUpperCase()));
+    	return roles.add(Roles.valueOf(role.toUpperCase()));
 	}
 	
 public boolean deleteRole(String role) {
 		
-    	return roles.remove(Role.valueOf(role.toUpperCase()));
+    	return roles.remove(Roles.valueOf(role.toUpperCase()));
 	}
 
 
